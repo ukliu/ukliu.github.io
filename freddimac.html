@@ -295,7 +295,7 @@ Here I run K-Medoids and divide the minority entries into 3 clusters, and then r
 <img src="img/AUC_4.png" alt="auc"><br/>
 <h2 id="sp"> </h2>
 The result is very exciting, but if want to explain this model, it is better to know what each cluster stands for. From a few exploratory X-Y plots below, we can see that, ltv (loan to value ratio) is one feature that differ between clusters 0 and 2, while the loan purpose (cashout or purchase) could be a major factor to seprate cluster 1 from the other two. The FICO score and dti (debt income ratio) do not seem to contribute much to the clustering.</br>
-<h4 id="sp"> </h4>
+<h2 id="sp"> </h2>
 <img src="img/clusters0.png" alt="auc"><br/>
 <h2 id="sp"> </h2>
 The last mission is to find the most important predictor features of the LR model for each cluster, i.e., to find those variables with highest absolute coefficients. The results are listed below, from which you can see that the importance of predictors differ significantly between different clusters. That explains why the performance of one simple LR model is weaker than this clustering-LR model.
