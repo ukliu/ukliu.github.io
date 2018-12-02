@@ -1,0 +1,342 @@
+
+<h1 id="title">Freddie Mac Project</h1>
+
+
+The goals of this project are to investigate how the financial meltdown affected the mortgage portofolio, and to build a prediction model for credit risk/delinquency.
+
+<h2 id="sp"> </h2>
+
+Data are from <a href="http://www.freddiemac.com/research/datasets/sf_loanlevel_dataset.html">the Freddie Mac Single Family Loan-Level Dataset</a>. There are two types of datasets, the origination data and the performance data. The origination data was generated at the initiation of mortgage borrowing, with features including loan characteristics such as FICO, LTV, CLTV, property type, etc. The performace data were collected monthly to monitor mortgages' behavior, with features including delinquency states, mortgage insurance recovery, interest rate adjustment, etc. In this project, I processed, analyzed and modeled the downloaded data (~14GB in zipped files) with python, and its associated visualization and machine learning packages including numpy, scipy, pandas, scikit-learn, matplotlib, seaborn, etc.
+<h2 id="sp"> Mortgages during the Financial Meltdown</h2>
+The first part of this project is to investigate the effect of financial meltdown on Freddie Mac mortgages. First of all, I compared FICO scores of all Freddic Mac mortgages issued in each season of 2008 and 2009.
+<h2 id="sp"> </h2>
+<img src="img/FICO.png" alt="FICO score"><br/>
+From this figure, we can see that after the financial meltdown, loans in general have high credit scores (FICO), i.e., the portion of subprime loans decreased substantially in the mortgage portfolio.
+<h2 id="sp"> </h2>
+Next, I compared delinquency rate of all Freddic Mac mortgages issued in each season of 2008 and 2009. Here the delinquency is defined based on the performance dataset that is reported 60 months after the mortgage issuing, with the criteria as follows:<br/>
+- A loan has reached 90+ days in delinquency.<br/>
+- A loan has shown recovery amount as recovery usually comes after foreclosure and repossession by the bank.<br/>
+- A loan has been modified, i.e., interest rate reduction after negotiating with the bank.
+<h2 id="sp"> </h2>
+<img src="img/Delin.png" alt="Dq_rate"><br/>
+From this figure, we can see that the quality of loans originated after the financial meltdown is considerably higher, i.e., their delinquency rate became much lower compared to those loans originated before the meltdown.
+<h2 id="sp"> </h2>
+At the same time, I built transition matrices of loan status, which are cross-tabulation tables presenting the probability of transition from one status to another. Such matrices are the foundation to build a Markov Chain model for forecasting risk and for cash flow analysis. <br/>
+Here I calculate a transition matrix from Novemeber 2008 to December 2008, two months after the breakout of financial crisis. Status 0.0 indicates mortgages in healthy form, while delinquncy becomes more and more severe from status 1.0 to status 6.0, and  mortages in worst conditions are labeled as charge-off. The row and column indices of this table indicate credit status of November and December 2008, respectively. For instance, ~1 percent of healthy mortages of November deteriorate to status 1.0 in the following month, while ~33 percent of mortgages of status 1.0 in November return to healthy state in December. Note in this calculation, I only compiled 3-year old martgages.
+<h2 id="sp"> </h2>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<table>
+  <tr>
+    <td>status</td>
+    <td>0.0</td>
+    <td>1.0</td>
+    <td>2.0</td>
+    <td>3.0</td>
+    <td>4.0</td>
+    <td>5.0</td>
+    <td>6.0</td>
+    <td>charge-off</td>
+    <td>All</td>    
+  </tr>
+  <tr>
+    <td>0.0</td>
+    <td>0.989325</td>
+    <td>0.010553</td>
+    <td>0.000082</td>
+    <td>0.000016</td>
+    <td>0.000003</td>
+    <td>0.000005</td>
+    <td>0.000008</td>
+    <td>0.000008</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>0.328482</td>
+    <td>0.465467</td>
+    <td>0.205030</td>
+    <td>0.001021</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>2.0</td>
+    <td>0.104630</td>
+    <td>0.147818</td>
+    <td>0.298753</td>
+    <td>0.445236</td>
+    <td>0.002671</td>
+    <td>0.000445</td>
+    <td>0.000000</td>
+    <td>0.000445</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>3.0</td>
+    <td>0.072312</td>
+    <td>0.031399</td>
+    <td>0.064700</td>
+    <td>0.137012</td>
+    <td>0.689819</td>
+    <td>0.003806</td>
+    <td>0.000951</td>
+    <td>0.000000</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>4.0</td>
+    <td>0.077033</td>
+    <td>0.005706</td>
+    <td>0.014265</td>
+    <td>0.025678</td>
+    <td>0.082739</td>
+    <td>0.793153</td>
+    <td>0.001427</td>
+    <td>0.000000</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>5.0</td>
+    <td>0.083799</td>
+    <td>0.005587</td>
+    <td>0.003724</td>
+    <td>0.005587</td>
+    <td>0.018622</td>
+    <td>0.042831</td>
+    <td>0.839851</td>
+    <td>0.000000</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>6.0</td>
+    <td>0.042553</td>
+    <td>0.002660</td>
+    <td>0.005319</td>
+    <td>0.000000</td>
+    <td>0.002660</td>
+    <td>0.010638</td>
+    <td>0.029255</td>
+    <td>0.906915</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>charge-off</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>0.000000</td>
+    <td>1.000000</td>
+    <td>1.0</td>  
+  </tr>
+  <tr>
+    <td>All</td>
+    <td>0.964036</td>
+    <td>0.020766</td>
+    <td>0.006281</td>
+    <td>0.003100</td>
+    <td>0.002106</td>
+    <td>0.001551</td>
+    <td>0.001228</td>
+    <td>0.000931</td>
+    <td>1.0</td>  
+  </tr>  
+</table>
+<h2 id="sp"> </h2>
+We can build similar transition matrices for each month to analyze general mortgage performance. Here I calculated the mortgage health-maintenance rate (i.e., the percentage of mortgages that remained at status 0.0 in two consecutive months). We can see that this rate drops ~1-2 percent after the financial crisis, possibly because subprime mortgages became more difficult to get. Note that 1 percent drop is significant, indicating more than 3,000 mortages are downgraded.
+<h2 id="sp"> </h2>
+<img src="img/Health.png" alt="Dq_rate"><br/>
+<h2 id="sp"> Mortgage Delinquency Model </h2>
+
+Now I have shown several exploratory analysis of Freddic Mac mortgages. The next part is to build a simple, white-box credit risk model to detect mortgage delinquncy. White-box models (e.g., logistic regression, decision tree) are preferred here, because when a mortgage application is denied, the loaners need to explain to the applicants which not-so-good features led to their decision.<br/>
+Here I am focused on 5-year old mortgages issued in 2009. Before building an actual machine learning model, a lot effort on data cleaning, exploratory analysis and transformation were made to make sure the data is in proper form to feed into the (logistic regression, LR) model. For instance, down payment is highly right-skewed, thus a log transformation is performed to make its distribution approximately normal; Several features are categorical, so dummy variables are created for them; All features are normalized to the same scale since we want to compare their coefficients to decide which features are more important. </br>
+Let us take on the cleaned and transformed data directly to build a LR model. The best model parameters are C=0.1, with L1 (lasso) penalty, obtained from gridsearch cross validation. One LR model is then trained by the training data using these parameters. Tested on the testing data, this model gives a quite decent precision score (0.98). I was amazed that such a simple model built in my first attempt has such strong performance!</br>
+However, when looking at other scores (recall, f1) other than precision, the model is actually awful.
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td> </td>
+    <td>precision</td>
+    <td>recall</td>
+    <td>f1-score</td>
+    <td>total#</td>  
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>0.98</td>
+    <td>1.00</td>
+    <td>0.99</td>
+    <td>25382</td> 
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>0.75</td>
+    <td>0.01</td>
+    <td>0.01</td>
+    <td>506</td> 
+  </tr>
+  <tr>
+    <td>avg/total</td>
+    <td>0.98</td>
+    <td>0.98</td>
+    <td>0.97</td>
+    <td>25888</td> 
+  </tr>
+</table>
+<h2 id="sp"> </h2>
+The table above shows that, while this model did a great job predicting the 0s (non-delinquent mortgages), it did terribly on predicting 1s (delinquency)! In other words, it is going to cost Freddie Mac tons of money for not detecting the delinquent mortgages! So what is wrong here? </br>
+The reason is that the Freddie Mac dataset is highly imbalanced, i.e., only a small fraction (<2 percent) of the mortgages are delinquent. With such highly imbalanced dataset, the model will focuse on the dominant part (the 0s), since no matter how it performed at predicting 1s barely affect the general precision. This is testified by the confusion matrix shown below, where you can see that, for 25382 0s, only 1 is mis-predicted as 1, while for 506 1s, only 3 is correctly predicted. </br>
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td> </td>
+    <td>Pred_0</td>
+    <td>Pred_1</td>
+  </tr>
+  <tr>
+    <td>Act_0</td>
+    <td>25381</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>Act_1</td>
+    <td>503</td>
+    <td>3</td>
+  </tr>
+</table>
+<h2 id="sp"> </h2>
+Before moving on from the simple LR model, I want to exploit the possibility to improve its performance. Most of the scorings of this simple LR have been shown above, except for the ROC-AUC score. In LR models or other classification models based on probability, normally you need a threshold to decide when zero turns into one. The most natural and widely used threshold is 0.5, as in our simple LR model. The advantage of using the AUC score is that it considers all possible thresholds. Various thresholds result in different true positive/false positive rates. As you decrease the threshold, you get more true positives, but also more false positives. So let us test the model's AUC to see if it can be improved by varying the thresholds.</br>
+<h2 id="sp"> </h2>
+<img src="img/AUC_1.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+The AUC score is 0.819, far from perfect, but not bad either, implying that our simple logistic model can be improved by varying the thresholds. If we lower the threshold from 0.5 to 0.02, the confusion matrix becomes as follows.
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td> </td>
+    <td>Pred_0</td>
+    <td>Pred_1</td>
+  </tr>
+  <tr>
+    <td>Act_0</td>
+    <td>18679</td>
+    <td>6703</td>
+  </tr>
+  <tr>
+    <td>Act_1</td>
+    <td>128</td>
+    <td>378</td>
+  </tr>
+</table>
+<h2 id="sp"> </h2>
+We can see that the true positive rate is significantly higher than that with a threshold of 0.5, at the cost of increasing false positive rate. Even in the confusion matrix with lower threshold, there are still large amounts of mis-predicted cases, since the simple LR model is far from perfect. Nevertheless, this model set a low bar for future complex models, only models with AUC scores (substantially) higher than 0.819 will be considered.</br>
+One last thing I need to present about the simple LR model is its coefficients, to check which features are more important to identify mortgage delinquency.</br>
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td>features</td>
+    <td>FICO</td>
+    <td>CLTV</td>
+    <td>DTI</td>
+    <td>LTV</td>
+    <td>Int_rt</td>
+    <td>cnt_borr</td>
+    <td>loan_purpose_C</td>
+    <td>loan_purpose_P</td>    
+  </tr>
+  <tr>
+    <td>coefficients</td>
+    <td>-0.553</td>
+    <td>0.210</td>
+    <td>0.464</td>
+    <td>0.332</td>
+    <td>0.181</td>
+    <td>-0.359</td>
+    <td>0.184</td>
+    <td>-0.203</td>
+  </tr>
+</table>
+<h2 id="sp"> </h2>
+The result shows that FICO score is the most important feature, followed by debt/income ratio (DTI), number of borrowers (cnt_borr), loan/value ratio (LTV). </br>
+<h2 id="sp"> </h2>
+Now we can finally move on to build more sophisticated models! Recall that the most drawback in our simple LR model is that it does not account for the imbalance of the Freddie Mac data. I am addressing this issue in three different approaches shown below.</br>
+The first approach is one commonly used in data science community, which is resampling. Since the amount ratios of 0s to 1s is about 50 in the dataset, we could either sampling a fraction of majority entries (i.e., under-sampling), or sampling the minority entries multiple times (i.e., over-sampling) to get a new dataset that is less imbalanced. The drawbacks of under-sampling is that some infomation might be lost, while for naive over-sampling, the drawback is that you'd end up learning too much of the specific of few examples, which wouldn't generalize well. To avoid these, here I used a SMOTE resampling technique, which synthesises new minority instances between existing (real) minority instances. For more explanation, please refer it <a href="http://rikunert.com/SMOTE_explained">here</a>. Building this model follows the same procedure as I did for the simple LR model, and the only difference is to change the original training data with SMOTE resampled training data. The roc-AUC score of this model, unfortunately, is similar to the simple LR model (Figure below), indicating no improvement.</br>
+<h2 id="sp"> </h2>
+<img src="img/AUC_2.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+Resampling seems not working for this dataset, so I turned into another approach based on a <a href= https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0117844>paper</a> of Wang et al. (2005). The procedure of this approach is that, the majority group (e.g., 0s of the Freddie Mac data) was first divided by clustering algorithm such as K-Means and k-Medoids, and each cluster is joined with bootstraps of the minority group (e.g., 1s here) to make a balanced dataset, which is then modeled by LR. These individual LRs are then grouped together to form an ensemble model. This approach, unfortunately again, does not work very well with the Freddie Mac dataset, with an even slightly lower ROC-AUC score (Figure below).</br>
+<h2 id="sp"> </h2>
+<img src="img/AUC_3.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+I was almost giving up after the previous two attempts which failed to improve the simple LR model, until I ran into <a href= http://www.jmlr.org/papers/volume8/owen07a/owen07a.pdf>this</a> mathematical analysis of highly imbalanced data. One major demonstration of this paper is that, for highly imbalanced data, the LR model depends only on the mean of minority predictors, no matter how spreaded they are. In other words, the LR model always tend to find the mean of minority predictors, and use that as an indicator to predict the minority label (i.e., 1s in this example). The result is that we lost a lot information of the minority group. Hypothetically, such information loss can be alleviated by clustering the minority entried into several groups, and then build a model for each group. <br/>
+Here I run K-Medoids and divide the minority entries into 3 clusters, and then run the LR model against each. Finally we see some improvement (see the figure below)! All three clusters exhibit significant higher AUC score than the simple LR model, hooray!! 
+<h2 id="sp"> </h2>
+<img src="img/AUC_4.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+The result is very exciting, but if want to explain this model, it is better to know what each cluster stands for. From a few exploratory X-Y plots below, we can see that, ltv (loan to value ratio) is one feature that differ between clusters 0 and 2, while the loan purpose (cashout or purchase) could be a major factor to seprate cluster 1 from the other two. The FICO score and dti (debt income ratio) do not seem to contribute much to the clustering.
+<img src="img/clusters0.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+The last mission is to find the most important predictor features of the LR model for each cluster, i.e., to find those variables with highest absolute coefficients. The results are listed below, from which you can see that the importance of predictors differ significantly between different clusters. That explains why the performance of one simple LR model is weaker than this clustering-LR model.
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td>features</td>
+    <td>FICO</td>
+    <td>DTI</td>
+    <td>LTV</td>
+    <td>cnt_borr</td>
+    <td>int_rt</td>
+  </tr>
+  <tr>
+    <td>cluster 0</td>
+    <td>-0.320</td>
+    <td>0.513</td>
+    <td>0.398</td>
+    <td>-1.192</td>
+    <td>-0.062</td>
+  </tr>
+  <tr>
+    <td>cluster 1</td>
+    <td>-0.576</td>
+    <td>0.566</td>
+    <td>0.572</td>
+    <td>-0.491</td>
+    <td>-0.288</td>
+  </tr>
+  <tr>
+    <td>cluster 2</td>
+    <td>-1.042</td>
+    <td>0.183</td>
+    <td>0.873</td>
+    <td>0.783</td>
+    <td>0.207</td>
+  </tr> 
+</table>
+<h2 id="sp"> </h2>
+
+The next section is to build a model for mortgage prepayment (to be continued).
+
+
+
+
