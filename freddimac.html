@@ -211,17 +211,17 @@ The reason is that the Freddie Mac dataset is highly imbalanced, i.e., only a sm
 <table>
   <tr>
     <td> </td>
+    <td>Real_0</td>
+    <td>Real_1</td>
+  </tr>
+  <tr>
     <td>Pred_0</td>
-    <td>Pred_1</td>
-  </tr>
-  <tr>
-    <td>Act_0</td>
     <td>25381</td>
-    <td>1</td>
+    <td>503</td>
   </tr>
   <tr>
-    <td>Act_1</td>
-    <td>503</td>
+    <td>Pred_1</td>
+    <td>1</td>
     <td>3</td>
   </tr>
 </table>
@@ -235,17 +235,17 @@ The AUC score is 0.819, far from perfect, but not bad either, implying that our 
 <table>
   <tr>
     <td> </td>
+    <td>Real_0</td>
+    <td>Real_1</td>
+  </tr>
+  <tr>
     <td>Pred_0</td>
-    <td>Pred_1</td>
-  </tr>
-  <tr>
-    <td>Act_0</td>
     <td>18679</td>
-    <td>6703</td>
+    <td>128</td>
   </tr>
   <tr>
-    <td>Act_1</td>
-    <td>128</td>
+    <td>Pred_1</td>
+    <td>6703</td>
     <td>378</td>
   </tr>
 </table>
@@ -298,41 +298,64 @@ The result is very exciting, but if want to explain this model, it is better to 
 <h2 id="sp"> </h2>
 <img src="img/clusters0.png" alt="auc"><br/>
 <h2 id="sp"> </h2>
-The last mission is to find the most important predictor features of the LR model for each cluster, i.e., to find those variables with highest absolute coefficients. The results are listed below, from which you can see that the importance of predictors differ significantly between different clusters. That explains why the performance of one simple LR model is weaker than this clustering-LR model.
+The last mission is to find the most important predictor features of the LR model for each cluster, i.e., to find those variables with highest absolute coefficients. The top 5 important features for each cluster are listed below, together with their coefficients. You can see that the importance of predictors differ significantly between different clusters. That explains why the performance of one simple LR model is weaker than this clustering-LR model.
 <h2 id="sp"> </h2>
 <table>
+  <thead>
+    <tr>
+      <th colspan='2'>Cluster0</th>
+      <th colspan='2'>Cluster1</th>
+      <th colspan='2'>Cluster2</th>
+    </tr>
+    <tr>
+      <th>feature</th>
+      <th>co-eff</th>
+      <th>feature</th>
+      <th>co-eff</th>
+      <th>feature</th>
+      <th>co-eff</th>      
+    </tr>
+  </thead>
   <tr>
-    <td>features</td>
-    <td>FICO</td>
-    <td>DTI</td>
-    <td>LTV</td>
+    <td>channel_B</td>
+    <td>-1.825</td>
+    <td>channel_R</td>
+    <td>-1.613</td>
+    <td>loan_purpose_C</td>
+    <td>-1.377</td>
+  </tr>
+  <tr>
+    <td>loan_purpose_C</td>
+    <td>1.315</td>
+    <td>channel_B</td>
+    <td>0.708</td>
+    <td>dti</td>
+    <td>0.739</td>
+  </tr>
+  <tr>
+    <td>cltv</td>
+    <td>0.675</td>
+    <td>fico</td>
+    <td>-0.692</td>
+    <td>cltv</td>
+    <td>0.613</td>
+  </tr>
+  <tr>
+    <td>fico</td>
+    <td>-0.667</td>
+    <td>dti</td>
+    <td>0.563</td>
+    <td>channel_B</td>
+    <td>-0.572</td>
+  </tr>
+  <tr>
     <td>cnt_borr</td>
-    <td>int_rt</td>
-  </tr>
-  <tr>
-    <td>cluster 0</td>
-    <td>-0.320</td>
-    <td>0.513</td>
-    <td>0.398</td>
-    <td>-1.192</td>
-    <td>-0.062</td>
-  </tr>
-  <tr>
-    <td>cluster 1</td>
-    <td>-0.576</td>
-    <td>0.566</td>
-    <td>0.572</td>
-    <td>-0.491</td>
-    <td>-0.288</td>
-  </tr>
-  <tr>
-    <td>cluster 2</td>
-    <td>-1.042</td>
-    <td>0.183</td>
-    <td>0.873</td>
-    <td>0.783</td>
-    <td>0.207</td>
-  </tr> 
+    <td>-0.396</td>
+    <td>loan_purpose_P</td>
+    <td>-0.316</td>
+    <td>fico</td>
+    <td>-0.435</td>
+  </tr>  
 </table>
 <h2 id="sp"> </h2>
 
