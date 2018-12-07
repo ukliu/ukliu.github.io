@@ -6,7 +6,7 @@ The goals of this project are to investigate how the financial meltdown affected
 
 <h2 id="sp"> </h2>
 
-Data are from <a href="http://www.freddiemac.com/research/datasets/sf_loanlevel_dataset.html">the Freddie Mac Single Family Loan-Level Dataset</a>. There are two types of datasets, the origination data and the performance data. The origination data was generated at the initiation of mortgage borrowing, with features including loan characteristics such as FICO, LTV, CLTV, property type, etc. The performace data were collected monthly to monitor mortgages' behavior, with features including delinquency states, mortgage insurance recovery, interest rate adjustment, etc. In this project, I processed, analyzed and modeled the downloaded data (~14GB in zipped files) with python, and its associated visualization and machine learning packages including numpy, scipy, pandas, scikit-learn, matplotlib, seaborn, etc.
+Data are from <a href="http://www.freddiemac.com/research/datasets/sf_loanlevel_dataset.html">the Freddie Mac Single Family Loan-Level Dataset</a>. There are two types of datasets, the origination data and the performance data. The origination data was generated at the initiation of mortgage borrowing, with features including loan characteristics such as FICO, LTV, CLTV, property type, etc. The performace data were collected monthly to monitor mortgages' behavior, with features including delinquency states, mortgage insurance recovery, interest rate adjustment, etc. In this project, I processed, analyzed and modeled the downloaded data (~14GB in zipped files) with python, and its associated visualization and machine learning packages including numpy, pandas, scikit-learn, matplotlib, seaborn, etc. I am mainly focused on using logistic regression model in this project, which is widely used in credit risk business.
 <h2 id="sp"> Mortgages during the Financial Meltdown</h2>
 The first part of this project is to investigate the effect of financial meltdown on Freddie Mac mortgages. First of all, I compared FICO scores of all Freddic Mac mortgages issued in each season of 2008 and 2009.
 <h2 id="sp"> </h2>
@@ -164,7 +164,7 @@ tr:nth-child(even) {
   </tr>  
 </table>
 <h2 id="sp"> </h2>
-We can build similar transition matrices for each month to analyze general mortgage performance. Here I calculated the mortgage health-maintenance rate (i.e., the percentage of mortgages that remained at status 0.0 in two consecutive months). We can see that this rate drops ~1-2 percent after the financial crisis, possibly because subprime mortgages became more difficult to get. Note that 1 percent drop is significant, indicating more than 3,000 mortages are downgraded.
+We can build similar transition matrices for each month to analyze general mortgage performance. Here I calculated a times series of percentage of mortgages that remained at status 0.0 in the following month (I called it mortgage healthy rate in the plot below). We can see that this rate drops ~1-2 percent after the financial crisis, possibly because subprime mortgages became more difficult to get. Note that 1 percent drop is significant, indicating more than 3,000 mortages are downgraded.
 <h2 id="sp"> </h2>
 <img src="img/Health.png" alt="Dq_rate"><br/>
 <h2 id="sp"> Mortgage Delinquency Model </h2>
@@ -358,8 +358,6 @@ The last mission is to find the most important predictor features of the LR mode
   </tr>  
 </table>
 <h2 id="sp"> </h2>
-
-The next section is to build a model for mortgage prepayment (the model has been built and evaluated. It takes a while to put everything on this webpage, please keep tuned).
 
 
 
