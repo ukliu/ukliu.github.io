@@ -358,7 +358,32 @@ The last mission is to find the most important predictor features of the LR mode
   </tr>  
 </table>
 <h2 id="sp"> </h2>
-
+Now we have shown that, the ensembled model of clustering and logistic regressions works much better than a simple logistic regression to detect mortgage delinquency. How about other models? Here let's (briefly) take a look at the performance the decision tree model.
+Similar to logistic regression, decision tree is a white-box model, easy to explain. However, its model results are deterministic without any associated probability. As a result, it is impossible to adjust the decision threshold to get the optimal true/false positive rate, or get a reasonable ROC-AUC score. The confusion matrix from a simple cross-validated decision tree model is similar to that of the logistic regression, with very low true positive rate, impacted by the extreme imbalance in the data.
+<h2 id="sp"> </h2>
+<table>
+  <tr>
+    <td> </td>
+    <td>Real_0</td>
+    <td>Real_1</td>
+  </tr>
+  <tr>
+    <td>Pred_0</td>
+    <td>25294</td>
+    <td>478</td>
+  </tr>
+  <tr>
+    <td>Pred_1</td>
+    <td>100</td>
+    <td>16</td>
+  </tr>
+</table>
+<h2 id="sp"> </h2>
+Decision tree models have no associated predicition probability or AUC scores, but ensemble models of boosting decision trees (e.g., Gradient boosting, XGBoost) do have these nice features. Here I am using XGBoost because of its<a href=https://www.analyticsvidhya.com/blog/2018/09/an-end-to-end-guide-to-understand-the-math-behind-xgboost/> superb efficiency and performance</a>. Tuning of XGBoost is much more complex than simple models as decision trees or logistic regressions. For detailed tuning procedure, please visit <a href= https://towardsdatascience.com/fine-tuning-xgboost-in-python-like-a-boss-b4543ed8b1e>here</a>. After tuning, XGBoost performs only slightly better than simple logistic regression (AUC=0.824, see the figure below).
+<h2 id="sp"> </h2>
+<img src="img/AUC_xgb.png" alt="auc"><br/>
+<h2 id="sp"> </h2>
+Thus, we can see that clustering+logistic regression outperforms the widely lauded XGBoost model! No doubt clustering+XGBoost would do even better but that model would be so complex that it is hard to explain to customers if their mortage applications were turned down. I would stick to the clustering+logistic regression model, but if you have other recommendations, please drop me a message at ukliu1985@gmail.com . Thank you!
 
 
 
