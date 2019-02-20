@@ -359,7 +359,7 @@ The last mission is to find the most important predictor features of the LR mode
 </table>
 <h2 id="sp"> </h2>
 Now we have shown that, the ensembled model of clustering and logistic regressions works much better than a simple logistic regression to detect mortgage delinquency. How about other models? Here let's (briefly) take a look at the performance the decision tree model.
-Similar to logistic regression, decision tree is a white-box model, easy to explain. However, its model results are deterministic without any associated probability. As a result, it is impossible to adjust the decision threshold to get the optimal true/false positive rate, or get a reasonable ROC-AUC score. The confusion matrix from a simple cross-validated decision tree model is similar to that of the logistic regression, with very low true positive rate, impacted by the extreme imbalance in the data.
+Similar to logistic regression, decision tree is a white-box model, easy to explain. The confusion matrix from a simple cross-validated decision tree model is similar to that of the logistic regression, with very low true positive rate, impacted by the extreme imbalance in the data.
 <h2 id="sp"> </h2>
 <table>
   <tr>
@@ -379,7 +379,7 @@ Similar to logistic regression, decision tree is a white-box model, easy to expl
   </tr>
 </table>
 <h2 id="sp"> </h2>
-Decision tree models have no associated predicition probability or AUC scores, but ensemble models of boosting decision trees (e.g., Gradient boosting, XGBoost) do have these nice features. Here I am using XGBoost because of its<a href=https://www.analyticsvidhya.com/blog/2018/09/an-end-to-end-guide-to-understand-the-math-behind-xgboost/> superb efficiency and performance</a>. Tuning of XGBoost is much more complex than simple models as decision trees or logistic regressions. For detailed tuning procedure, please visit <a href= https://towardsdatascience.com/fine-tuning-xgboost-in-python-like-a-boss-b4543ed8b1e>here</a>. After tuning, XGBoost performs only slightly better than simple logistic regression (AUC=0.824, see the figure below).
+Althpugh predicition probability and AUC score can be calculated for prodecision tree classifications bu computing the class probability from the number of samples of each class that fall into a given leaf, to find a reasonable threshold for the 0-1 classification is not that strightforward as lositic regressions, so I will just skip this part for trees. Ensemble models of boosting decision trees (e.g., Gradient boosting, XGBoost) also report, and can be tuned based on AUC metrics. Here I am using XGBoost because of its<a href=https://www.analyticsvidhya.com/blog/2018/09/an-end-to-end-guide-to-understand-the-math-behind-xgboost/> superb efficiency and performance</a>. Tuning of XGBoost is much more complex than simple models as decision trees or logistic regressions. For detailed tuning procedure, please visit <a href= https://towardsdatascience.com/fine-tuning-xgboost-in-python-like-a-boss-b4543ed8b1e>here</a>. After tuning, XGBoost performs only slightly better than simple logistic regression (AUC=0.824, see the figure below).
 <h2 id="sp"> </h2>
 <img src="img/AUC_xgb.png" alt="auc"><br/>
 <h2 id="sp"> </h2>
